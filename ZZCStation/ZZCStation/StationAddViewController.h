@@ -12,13 +12,13 @@
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 #import <BaiduMapAPI_Search/BMKSearchComponent.h>
 
-@protocol StationAddViewControllerDelegate <NSObject>
--(void)reloadWithDic:(NSDictionary *)dic;
-@end
+//@protocol StationAddViewControllerDelegate <NSObject>
+//-(void)reloadWithDic:(NSDictionary *)dic;
+//@end
 
 @interface StationAddViewController : UIViewController <UITextFieldDelegate,BMKMapViewDelegate,BMKGeoCodeSearchDelegate>
 
-@property(nonatomic,weak)id<StationAddViewControllerDelegate>delegate;
+//@property(nonatomic,weak)id<StationAddViewControllerDelegate>delegate;
 
 @property (strong, nonatomic) UITextField *stationNameTF;
 @property (strong, nonatomic) UITextField *stationAddressTF;

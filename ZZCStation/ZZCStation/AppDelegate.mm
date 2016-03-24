@@ -9,8 +9,15 @@
 #import "AppDelegate.h"
 #import "StationListViewController.h"
 #import <AVOSCloud/AVOSCloud.h>
+#import "JSONKit.h"
+#import "MJExtension.h"
+#import "StationDataModel.h"
+
+
 
 @interface AppDelegate ()
+
+@property (nonatomic,strong) NSMutableArray *powerStationDataArray;
 
 @end
 
@@ -24,9 +31,17 @@
                       clientKey:@"1NMjNSW5V1h3SsWXpkdoum6x"];
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
+//    [AVUser logInWithUsernameInBackground:@"Ray" password:@"123456" block:^(AVUser *user, NSError *error) {
+//        NSLog(@"user = %@",user);
+//        NSLog(@"AVUser error = %@",error);
+//    }];
+
+    
     StationListViewController *myVC = [[StationListViewController alloc] init];
     
-    _navigationController = [[UINavigationController alloc] initWithRootViewController:myVC];
+    myVC.powerStationDataArray = self.powerStationDataArray;
+    
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:myVC];
     
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0))
     {
@@ -49,6 +64,8 @@
     
     return YES;
 }
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

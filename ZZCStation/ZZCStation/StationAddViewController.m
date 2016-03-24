@@ -143,7 +143,7 @@
         /**
          *  调用代理方法
          */
-        [_delegate reloadWithDic:newDic];
+//        [_delegate reloadWithDic:newDic];
         
         [self.navigationController popViewControllerAnimated:YES];
         

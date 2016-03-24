@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVOSCloud/AVOSCloud.h>
+#import "StationDataModel.h"
+
 @interface StationListViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
+
+@property (nonatomic,strong) NSMutableArray *powerStationDataArray;
 
 @end

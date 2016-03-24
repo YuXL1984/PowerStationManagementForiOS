@@ -17,9 +17,6 @@
     //NSLog(@"getStr : %@",getStr);
     _dataArray = [[NSMutableArray alloc] init];
     [_dataArray addObjectsFromArray:[getStr objectFromJSONString]];
-
-    //NSArray *dataRead = [getStr objectFromJSONString];
-    //NSLog(@"%@",_dataArray);
 }
 -(void)jsonDataWrite:(NSDictionary *)dataDic{
     [self jsonDataRead];
