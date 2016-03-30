@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		7104EF121C5E2EC800C38CAA /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7104EF111C5E2EC800C38CAA /* mapapi.bundle */; };
 		7104EF151C5E48D300C38CAA /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 7104EF141C5E48D300C38CAA /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		7137F0C31CAA77D2005FA123 /* FromCallFunctionToDic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7137F0C21CAA77D2005FA123 /* FromCallFunctionToDic.m */; };
 		715278A41C9F8B0E00C0DF81 /* StationDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 715278A31C9F8B0E00C0DF81 /* StationDataModel.m */; };
+		715D2AAD1CA3D06900C8C662 /* StationSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 715D2AAC1CA3D06900C8C662 /* StationSearchViewController.m */; };
 		7192CD1D1C5F99FE0051BD58 /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7192CD1C1C5F99FE0051BD58 /* LocationViewController.m */; };
 		7192CD201C5F9A610051BD58 /* LocationDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7192CD1F1C5F9A610051BD58 /* LocationDemoViewController.m */; };
 		7192CD221C5F9AA50051BD58 /* LocationDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7192CD211C5F9AA50051BD58 /* LocationDemoViewController.xib */; };
@@ -97,8 +99,12 @@
 		7104EF111C5E2EC800C38CAA /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = Libs/mapapi.bundle; sourceTree = "<group>"; };
 		7104EF131C5E48D300C38CAA /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		7104EF141C5E48D300C38CAA /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		7137F0C11CAA77D2005FA123 /* FromCallFunctionToDic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FromCallFunctionToDic.h; sourceTree = "<group>"; };
+		7137F0C21CAA77D2005FA123 /* FromCallFunctionToDic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FromCallFunctionToDic.m; sourceTree = "<group>"; };
 		715278A21C9F8B0E00C0DF81 /* StationDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationDataModel.h; sourceTree = "<group>"; };
 		715278A31C9F8B0E00C0DF81 /* StationDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationDataModel.m; sourceTree = "<group>"; };
+		715D2AAB1CA3D06900C8C662 /* StationSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationSearchViewController.h; sourceTree = "<group>"; };
+		715D2AAC1CA3D06900C8C662 /* StationSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationSearchViewController.m; sourceTree = "<group>"; };
 		7192CD1B1C5F99FE0051BD58 /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
 		7192CD1C1C5F99FE0051BD58 /* LocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
 		7192CD1E1C5F9A610051BD58 /* LocationDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDemoViewController.h; sourceTree = "<group>"; };
@@ -282,6 +288,8 @@
 				71A0EB291C5DAFA0005C288B /* StationListViewController.m */,
 				71D4FDF21CA11BDB00DDEAFB /* StationListViewCell.h */,
 				71D4FDF31CA11BDB00DDEAFB /* StationListViewCell.m */,
+				715D2AAB1CA3D06900C8C662 /* StationSearchViewController.h */,
+				715D2AAC1CA3D06900C8C662 /* StationSearchViewController.m */,
 				71A0EB2A1C5DAFA0005C288B /* StationAddViewController.h */,
 				71A0EB2B1C5DAFA0005C288B /* StationAddViewController.m */,
 				7192CD1B1C5F99FE0051BD58 /* LocationViewController.h */,
@@ -305,6 +313,8 @@
 			children = (
 				715278A21C9F8B0E00C0DF81 /* StationDataModel.h */,
 				715278A31C9F8B0E00C0DF81 /* StationDataModel.m */,
+				7137F0C11CAA77D2005FA123 /* FromCallFunctionToDic.h */,
+				7137F0C21CAA77D2005FA123 /* FromCallFunctionToDic.m */,
 				71A0EB671C5E1507005C288B /* JsonDataRW.h */,
 				71A0EB681C5E1507005C288B /* JsonDataRW.m */,
 				71A0EB541C5E14C1005C288B /* Icon.png */,
@@ -634,6 +644,7 @@
 				71D4FDB11CA1002D00DDEAFB /* NSString+MJExtension.m in Sources */,
 				71D4FDAA1CA1002D00DDEAFB /* MJProperty.m in Sources */,
 				71A0EB301C5DAFA0005C288B /* StationAddressDetailViewController.m in Sources */,
+				715D2AAD1CA3D06900C8C662 /* StationSearchViewController.m in Sources */,
 				71D4FDF11CA10C7C00DDEAFB /* UIView+MJExtension.m in Sources */,
 				71A0EB691C5E1507005C288B /* JsonDataRW.m in Sources */,
 				71D4FDEC1CA10C7C00DDEAFB /* MJRefreshStateHeader.m in Sources */,
@@ -642,6 +653,7 @@
 				71D4FDE51CA10C7C00DDEAFB /* MJRefreshAutoNormalFooter.m in Sources */,
 				7192CD201C5F9A610051BD58 /* LocationDemoViewController.m in Sources */,
 				71D4FDEB1CA10C7C00DDEAFB /* MJRefreshNormalHeader.m in Sources */,
+				7137F0C31CAA77D2005FA123 /* FromCallFunctionToDic.m in Sources */,
 				71D4FDE61CA10C7C00DDEAFB /* MJRefreshAutoStateFooter.m in Sources */,
 				71D4FDE01CA10C7C00DDEAFB /* MJRefreshBackFooter.m in Sources */,
 				71D4FDEA1CA10C7C00DDEAFB /* MJRefreshGifHeader.m in Sources */,

@@ -16,6 +16,8 @@
 #import <AVOSCloud/AVOSCloud.h>
 #import <BaiduMapAPI_Map/BMKMapComponent.h>//引入地图功能所有的头文件
 #import "StationListViewCell.h"
+#import "StationSearchViewController.h"
+#import "FromCallFunctionToDic.h"
 
 @interface StationListViewController () //<StationAddViewControllerDelegate>
 
@@ -40,7 +42,7 @@
     UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStyleDone target:self action:@selector(addAction)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     
-    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithTitle:@"搜索" style:UIBarButtonItemStyleDone target:self action:@selector(addAction)];
+    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithTitle:@"搜索" style:UIBarButtonItemStyleDone target:self action:@selector(searchAction)];
     self.navigationItem.leftBarButtonItem = leftBtn;
     
     //设置行高
@@ -83,9 +85,12 @@
     //    [self.navigationController pushViewController:detailVC animated:YES];
     
     StationAddressDetailViewController *StationAddressDetailVC = [[StationAddressDetailViewController alloc] init];
-    NSDictionary *tempDic = self.powerStationDataArray[indexPath.row];
-    StationAddressDetailVC.nameTitle = [tempDic valueForKey:@"stationName"];
-    StationAddressDetailVC.addessTitle = [tempDic valueForKey:@"stationAddress"];
+//    NSDictionary *tempDic = self.powerStationDataArray[indexPath.row];
+//    StationAddressDetailVC.nameTitle = [tempDic valueForKey:@"stationName"];
+//    StationAddressDetailVC.addessTitle = [tempDic valueForKey:@"stationAddress"];
+    StationDataModel *sdModelForDetail = self.powerStationDataArray[indexPath.row];
+    StationAddressDetailVC.nameTitle = sdModelForDetail.stationName;
+    StationAddressDetailVC.addessTitle = sdModelForDetail.stationAddress;
     [self.navigationController pushViewController:StationAddressDetailVC animated:YES];
     
 }
@@ -94,20 +99,26 @@
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         StationDataModel *sdModel = self.powerStationDataArray[indexPath.row];
+        
         NSDictionary *delDic = @{@"objectId":sdModel.objectId};
-        [AVCloud callFunctionInBackground:@"delStationDataForOid" withParameters:delDic block:^(id object, NSError *error) {
-            NSDictionary *tempDic = [object objectFromJSONStringWithParseOptions:JKSerializeOptionEscapeUnicode error:&error];
-            NSLog(@"tempDic = %@",tempDic);
-            if ([tempDic[@"code"] isEqualToString:@"1000"]) {
-                [self.powerStationDataArray removeObjectAtIndex:indexPath.row];
-                [self.stationListVC deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                NSDictionary *resultDataDic = [object objectFromJSONStringWithParseOptions:JKSerializeOptionEscapeUnicode error:&error];
-                UIAlertView *alertViewForResultData = [[UIAlertView alloc] initWithTitle:@"提示" message:resultDataDic[@"resultData"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                [alertViewForResultData show];
+        
+        [FromCallFunctionToDic callFunctionInBackground:@"delStationDataForOid" withParameters:delDic block:^(id object, NSError *error) {
+            if (error) {
+                UIAlertView *delFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                [delFunctionError show];
             } else {
-                NSDictionary *errorDic = [object objectFromJSONStringWithParseOptions:JKSerializeOptionEscapeUnicode error:&error];
-                UIAlertView *alertViewForError = [[UIAlertView alloc] initWithTitle:@"提示" message:errorDic[@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                [alertViewForError show];
+                if ([object[@"code"] isEqualToString:@"1000"]) {
+                    
+                    [self.powerStationDataArray removeObjectAtIndex:indexPath.row];
+                    [self.stationListVC deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    UIAlertView *delResultData = [[UIAlertView alloc] initWithTitle:@"提示" message:object[@"resultData"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [delResultData show];
+                } else {
+                    UIAlertView *delError = [[UIAlertView alloc] initWithTitle:@"提示" message:object[@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [delError show];
+
+                }
             }
         }];
         self.stationListVC.editing = NO;
@@ -131,11 +142,10 @@
     
     static NSString *cellIdentifier = @"cell";
     
-    //TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
     if (!cell) {
-        //cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        cell = [[StationListViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
     StationDataModel *sdModel = self.powerStationDataArray[indexPath.row];
@@ -144,32 +154,33 @@
     
     return cell;
 }
-
-
-
-
-
+-(void)searchAction{
+    StationSearchViewController *stationSearchVC = [[ StationSearchViewController alloc] init];
+    [self.navigationController pushViewController:stationSearchVC animated:YES];
+}
+    
 -(void)addAction{
     StationAddViewController *stationAddVC = [[StationAddViewController alloc] init];
     [self.navigationController pushViewController:stationAddVC animated:YES];
 }
 
 -(void)requestStationDataFromBackground{
-    [AVCloud callFunctionInBackground:@"loadStationData" withParameters:nil block:^(id object, NSError *error) {
-        if (!error) {
-            NSDictionary *tempDic = [object objectFromJSONStringWithParseOptions:JKSerializeOptionEscapeUnicode error:&error];
-            if ([[tempDic objectForKey:@"code"] isEqualToString:@"1000"]) {
-                NSArray *tempArray = [tempDic objectForKey:@"resultData"];
-                self.powerStationDataArray = [StationDataModel mj_objectArrayWithKeyValuesArray:tempArray];
-                NSLog(@"powerStationDataArray.count = %ld",self.powerStationDataArray.count);
-                [self.stationListVC reloadData];
-            }
-        } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"无法正常从后台获取数据！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            [alertView show];
-        }
 
+    [FromCallFunctionToDic callFunctionInBackground:@"loadStationData" withParameters:nil block:^(id object, NSError *error) {
+        if (error) {
+            UIAlertView *loadFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [loadFunctionError show];
+        } else {
+            if ([object[@"code"] isEqualToString:@"1000"]) {
+                self.powerStationDataArray = [StationDataModel mj_objectArrayWithKeyValuesArray:object[@"resultData"]];
+                [self.stationListVC reloadData];
+            } else {
+                UIAlertView *loadError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台返回数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                [loadError show];
+            }
+        }
     }];
+
 }
 
 - (void)didReceiveMemoryWarning {

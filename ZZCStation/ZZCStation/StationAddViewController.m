@@ -7,9 +7,11 @@
 //
 
 #import "StationAddViewController.h"
-#import "JsonDataRW.h"
 #import <BaiduMapAPI_Map/BMKMapComponent.h>//引入地图功能所有的头文件
 #import <MapKit/MapKit.h>
+#import <AVOSCloud/AVOSCloud.h>
+#import "JSONKit.h"
+#import "FromCallFunctionToDic.h"
 
 @interface StationAddViewController ()
 {
@@ -30,16 +32,13 @@
 }
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
-    self.navigationItem.title = _nameTitle;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.stationNameTF.delegate = self;
-    self.stationAddressTF.delegate = self;
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
-    
+    [self setTitle:@"添加站点"];
     [self configStationNameTF];
     [self configStationAddressTF];
     [self configSearchBtn];
@@ -79,74 +78,73 @@
 
 
 #pragma textFieldDelegate
--(void)textFieldDidBeginEditing:(UITextField *)textField {
-    CGRect frame = textField.frame;
-    int offset = frame.origin.y + 70 - (self.view.frame.size.height - 215.0);//iPhone键盘高度216，iPad的为352
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:0.5f];
-    
-    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
-    
-    if(offset > 0)
-        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
-    [UIView commitAnimations];
+//-(void)textFieldDidBeginEditing:(UITextField *)textField {
+//    CGRect frame = textField.frame;
+//    int offset = frame.origin.y + 70 - (self.view.frame.size.height - 215.0);//iPhone键盘高度216，iPad的为352
+//    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+//    [UIView setAnimationDuration:0.5f];
+//    
+//    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
+//    
+//    if(offset > 0)
+//        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
+//    [UIView commitAnimations];
+//}
+//
+////输入框编辑完成以后，将视图恢复到原始状态
+//-(void)textFieldDidEndEditing:(UITextField *)textField {
+//    
+//    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    
+//}
+
+//点击空白处回收键盘
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.stationNameTF resignFirstResponder];
+    [self.stationAddressTF resignFirstResponder];
 }
 
-//输入框编辑完成以后，将视图恢复到原始状态
--(void)textFieldDidEndEditing:(UITextField *)textField {
-    
-    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    [_stationNameTF resignFirstResponder];
-    [_stationAddressTF resignFirstResponder];
+//点击右下角或者回车回收键盘
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.stationNameTF resignFirstResponder];
+    [self.stationAddressTF resignFirstResponder];
+    return YES;
 }
 
 #pragma action
 -(void)save{
     
-    if (_stationNameTF.text.length == 0) {
+    if (self.stationNameTF.text.length == 0) {
         
         UIAlertView *stationNameString = [[UIAlertView alloc] initWithTitle:@"提示" message:@"站点名称不能为空!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [stationNameString show];
         
-    }else if (_stationAddressTF.text.length == 0) {
+    }else if (self.stationAddressTF.text.length == 0) {
         
         UIAlertView *stationNameString = [[UIAlertView alloc] initWithTitle:@"提示" message:@"站点地址不能为空!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [stationNameString show];
         
     }else{
-//        NSString *stationName = [[NSString alloc] init];
-//        stationName = self.stationNameTF.text;
+
+        NSDictionary *addDic = [[NSDictionary alloc] init];
+        addDic = @{@"stationName":self.stationNameTF.text,@"stationAddress":self.stationAddressTF.text};
         
-//        NSString *stationAddress = [[NSString alloc] init];
-//        stationAddress = self.stationAddressTF.text;
-        
-//        UIImage *stationImage = [[UIImage alloc] init];
-//        stationImage = _stationImageAdd;
-//        if (!_stationImageAdd) {
-//            stationImage = [UIImage imageNamed:@"temp"];
-//        }        
-//        NSData *data =  UIImageJPEGRepresentation(stationImage, 0.9);
-//        NSString *imageName = [[NSString alloc] initWithFormat:@"%@.png",stationName];
-//        [data writeToFile:[[jsonDataRW getFilePath] stringByAppendingPathComponent:imageName] atomically:YES];
-        
-        JsonDataRW *jsonDataRW = [[JsonDataRW alloc] init];
-        
-        NSDictionary *newDic = [[NSDictionary alloc] init];
-        newDic = @{@"Name":self.stationNameTF.text,@"Address":self.stationAddressTF.text};
-        
-        [jsonDataRW jsonDataWrite:newDic];
-        
-        /**
-         *  调用代理方法
-         */
-//        [_delegate reloadWithDic:newDic];
-        
-        [self.navigationController popViewControllerAnimated:YES];
-        
+        [FromCallFunctionToDic callFunctionInBackground:@"addStationData" withParameters:addDic block:^(id object, NSError *error) {
+            if (error) {
+                UIAlertView *addFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                [addFunctionError show];
+            } else {
+                if ([object[@"code"] isEqualToString:@"1000"]) {
+                    NSString *addOK = [NSString stringWithFormat:@"添加%@站点成功!",[object[@"resultData"] objectForKey:@"stationName"]];
+                    UIAlertView *addResultData = [[UIAlertView alloc] initWithTitle:@"提示" message:addOK delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [addResultData show];
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    UIAlertView *addError = [[UIAlertView alloc] initWithTitle:@"提示" message:object[@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [addError show];
+                }
+            }
+        }];
     }
     
 }
@@ -213,14 +211,14 @@
     isGeoSearch = true;
     BMKGeoCodeSearchOption *geocodeSearchOption = [[BMKGeoCodeSearchOption alloc]init];
     geocodeSearchOption.city= @"北京市";
-    //geocodeSearchOption.address = _stationAddressTF.text;
+    //geocodeSearchOption.address = self.stationAddressTF.text;
     //geocodeSearchOption.address = @"海淀区供电局";
     if (_stationAddressTF.text.length == 0) {
         NSLog(@"地址为空");
         UIAlertView *messageAV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请输入站点地址！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [messageAV show];
     }
-    else if (_stationAddressTF.text.length >= 1){
+    else if (self.stationAddressTF.text.length >= 1){
         geocodeSearchOption.address = _stationAddressTF.text;
     }
     BOOL flag = [_geocodesearch geoCode:geocodeSearchOption];
@@ -242,7 +240,7 @@
     //[_stationNameTF setBackgroundColor:[UIColor grayColor]];
     [_stationNameTF setBorderStyle:UITextBorderStyleRoundedRect];
     [_stationNameTF setClearButtonMode:UITextFieldViewModeAlways];
-    
+    _stationNameTF.delegate = self;
     return _stationNameTF;
 }
 
@@ -254,6 +252,7 @@
     //[_stationAddressTF setBackgroundColor:[UIColor grayColor]];
     [_stationAddressTF setBorderStyle:UITextBorderStyleRoundedRect];
     [_stationAddressTF setClearButtonMode:UITextFieldViewModeAlways];
+    _stationAddressTF.delegate = self;
     return _stationAddressTF;
 }
 
@@ -283,10 +282,15 @@
 -(BMKMapView *)configMapView{
     if (!_mapView) {
         _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 32+32+2, self.view.bounds.size.width, self.view.bounds.size.height-64-32-32)];
+//        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(mapViewClick:)];
+//        [_mapView addGestureRecognizer:gesture];
     }
     return _mapView;
 }
-
+//-(void)mapViewClick:(UITapGestureRecognizer *)sender{
+//    [self.stationNameTF resignFirstResponder];
+//    [self.stationAddressTF resignFirstResponder];
+//}
 
 
 @end
