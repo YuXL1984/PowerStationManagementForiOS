@@ -298,6 +298,10 @@
 				71A0EB2D1C5DAFA0005C288B /* StationAddressDetailViewController.m */,
 				7192CD1E1C5F9A610051BD58 /* LocationDemoViewController.h */,
 				7192CD1F1C5F9A610051BD58 /* LocationDemoViewController.m */,
+				715278A21C9F8B0E00C0DF81 /* StationDataModel.h */,
+				715278A31C9F8B0E00C0DF81 /* StationDataModel.m */,
+				7137F0C11CAA77D2005FA123 /* FromCallFunctionToDic.h */,
+				7137F0C21CAA77D2005FA123 /* FromCallFunctionToDic.m */,
 				7192CD211C5F9AA50051BD58 /* LocationDemoViewController.xib */,
 				71A0EAFE1C5DADBD005C288B /* Main.storyboard */,
 				71A0EB011C5DADBD005C288B /* Assets.xcassets */,
@@ -311,10 +315,6 @@
 		71A0EAF51C5DADBC005C288B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				715278A21C9F8B0E00C0DF81 /* StationDataModel.h */,
-				715278A31C9F8B0E00C0DF81 /* StationDataModel.m */,
-				7137F0C11CAA77D2005FA123 /* FromCallFunctionToDic.h */,
-				7137F0C21CAA77D2005FA123 /* FromCallFunctionToDic.m */,
 				71A0EB671C5E1507005C288B /* JsonDataRW.h */,
 				71A0EB681C5E1507005C288B /* JsonDataRW.m */,
 				71A0EB541C5E14C1005C288B /* Icon.png */,
