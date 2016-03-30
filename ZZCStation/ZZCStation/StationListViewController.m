@@ -24,7 +24,10 @@
 @property (nonatomic,strong)UITableView *stationListVC;
 @property (nonatomic,strong)StationListViewCell *cell;
 
-//@property (nonatomic,strong)JsonDataRW *jsonDataRW;
+@property(nonatomic,strong)NSMutableArray *indexArray;
+@property(nonatomic,strong)NSMutableArray *letterResultArr;
+@property(nonatomic,strong)NSMutableArray *dataArray;
+@property(nonatomic,strong)NSMutableArray *stateArray;
 
 @end
 
