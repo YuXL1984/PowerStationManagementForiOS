@@ -12,7 +12,7 @@
 #import "JsonDataRW.h"
 #import "JSONKit.h"
 #import "StationDataModel.h"
-#import "MJExtension/MJExtension.h"
+#import "MJExtension.h"
 #import <AVOSCloud/AVOSCloud.h>
 #import <BaiduMapAPI_Map/BMKMapComponent.h>//引入地图功能所有的头文件
 #import "StationListViewCell.h"
@@ -23,11 +23,6 @@
 
 @property (nonatomic,strong)UITableView *stationListVC;
 @property (nonatomic,strong)StationListViewCell *cell;
-
-@property(nonatomic,strong)NSMutableArray *indexArray;
-@property(nonatomic,strong)NSMutableArray *letterResultArr;
-@property(nonatomic,strong)NSMutableArray *dataArray;
-@property(nonatomic,strong)NSMutableArray *stateArray;
 
 @end
 
@@ -183,10 +178,11 @@
             }
         }
     }];
-
 }
 
-- (void)didReceiveMemoryWarning {
+
+
+-(void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

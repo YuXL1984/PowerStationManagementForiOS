@@ -12,12 +12,10 @@
 #import "JSONKit.h"
 #import "MJExtension.h"
 #import "StationDataModel.h"
-
+#import "StationManagementViewController.h"
 
 
 @interface AppDelegate ()
-
-@property (nonatomic,strong) NSMutableArray *powerStationDataArray;
 
 @end
 
@@ -37,9 +35,8 @@
 //    }];
 
     
-    StationListViewController *myVC = [[StationListViewController alloc] init];
-    
-    myVC.powerStationDataArray = self.powerStationDataArray;
+//    StationListViewController *myVC = [[StationListViewController alloc] init];
+    StationManagementViewController *myVC = [[StationManagementViewController alloc] init];
     
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:myVC];
     
