@@ -33,8 +33,36 @@
     return A_Result;
 }
 
+
 #pragma mark - 返回联系人
-+(NSMutableArray*)LetterSortArray:(NSArray*)stringArr
+//+(NSMutableArray*)LetterSortArray:(NSArray*)stringArr
+//{
+//    NSMutableArray *tempArray = [self ReturnSortChineseArrar:stringArr];
+//    NSMutableArray *LetterResult = [NSMutableArray array];
+//    NSMutableArray *item = [NSMutableArray array];
+//    NSString *tempString;
+//    //拼音分组
+//    for (NSString* object in tempArray) {
+//        
+//        NSString *pinyin = [((ChineseString*)object).pinYin substringToIndex:1];
+//        NSString *string = ((ChineseString*)object).string;
+//        //不同
+//        if(![tempString isEqualToString:pinyin])
+//        {
+//            //分组
+//            item = [NSMutableArray array];
+//            [item  addObject:string];
+//            [LetterResult addObject:item];
+//            //遍历
+//            tempString = pinyin;
+//        }else//相同
+//        {
+//            [item  addObject:string];
+//        }
+//    }
+//    return LetterResult;
+//}
++(NSMutableArray*)LetterSortArray:(NSArray*)stringArr WithModelArray:(NSMutableArray *)modelArray
 {
     NSMutableArray *tempArray = [self ReturnSortChineseArrar:stringArr];
     NSMutableArray *LetterResult = [NSMutableArray array];
@@ -50,24 +78,97 @@
         {
             //分组
             item = [NSMutableArray array];
-            [item  addObject:string];
+            
+            for (StationDataModel *sdModelForArr in modelArray) {
+                if ([sdModelForArr.stationName isEqualToString:string]) {
+                    [item addObject:sdModelForArr];
+                    break;
+                }
+            }
+            
             [LetterResult addObject:item];
             //遍历
             tempString = pinyin;
         }else//相同
         {
-            [item  addObject:string];
+            for (StationDataModel *sdModelForArr in modelArray) {
+                if ([sdModelForArr.stationName isEqualToString:string]) {
+                    [item addObject:sdModelForArr];
+                    break;
+                }
+            }
         }
     }
     return LetterResult;
 }
-
 
 ///////////////////
 //
 //返回排序好的字符拼音
 //
 ///////////////////
+//+(NSMutableArray*)ReturnSortChineseArrar:(NSArray*)stringArr
+//{
+//    //获取字符串中文字的拼音首字母并与字符串共同存放
+//    NSMutableArray *chineseStringsArray=[NSMutableArray array];
+//    for(int i=0;i<[stringArr count];i++)
+//    {
+//        ChineseString *chineseString = [[ChineseString alloc]init];
+//        chineseString.string = [NSString stringWithString:[stringArr objectAtIndex:i]];
+//        if(chineseString.string == nil){
+//            chineseString.string = @"";
+//        }
+//        //去除两端空格和回车
+//        chineseString.string  = [chineseString.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+//        
+//        
+//        //此方法存在一些问题 有些字符过滤不了
+//        //NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@"@／：；（）¥「」＂、[]{}#%-*+=_\\|~＜＞$€^•'@#$%^&*()_+'\""];
+//        //chineseString.string = [chineseString.string stringByTrimmingCharactersInSet:set];
+//        
+//        
+//        //这里我自己写了一个递归过滤指定字符串   RemoveSpecialCharacter
+//        chineseString.string = [ChineseString RemoveSpecialCharacter:chineseString.string];
+//        // NSLog(@"string====%@",chineseString.string);
+//        
+//        
+//        //判断首字符是否为字母
+//        NSString *regex = @"[A-Za-z]+";
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+//        NSString *initialStr = [chineseString.string length]?[chineseString.string substringToIndex:1]:@"";
+//        if ([predicate evaluateWithObject:initialStr])
+//        {
+////            NSLog(@"chineseString.string== %@",chineseString.string);
+//            //首字母大写
+//            chineseString.pinYin = [chineseString.string capitalizedString] ;
+//        }else{
+//            if(![chineseString.string isEqualToString:@""]){
+//                NSString *pinYinResult = [NSString string];
+//                for(int j=0;j<chineseString.string.length;j++){
+//                    NSString *singlePinyinLetter = [[NSString stringWithFormat:@"%c",
+//                                                   
+//                                                   pinyinFirstLetter([chineseString.string characterAtIndex:j])]uppercaseString];
+//                    //                    NSLog(@"singlePinyinLetter ==%@",singlePinyinLetter);
+//                    
+//                    pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
+//                }
+//                chineseString.pinYin = pinYinResult;
+//            }else{
+//                chineseString.pinYin = @"";
+//            }
+//        }
+//        [chineseStringsArray addObject:chineseString];
+//    }
+//    //按照拼音首字母对这些Strings进行排序
+//    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"pinYin" ascending:YES]];
+//    [chineseStringsArray sortUsingDescriptors:sortDescriptors];
+//    
+////    for(int i=0;i<[chineseStringsArray count];i++){
+////        NSLog(@"chineseStringsArray====%@",((ChineseString*)[chineseStringsArray objectAtIndex:i]).pinYin);
+////    }
+//    NSLog(@"-----------------------------");
+//    return chineseStringsArray;
+//}
 +(NSMutableArray*)ReturnSortChineseArrar:(NSArray*)stringArr
 {
     //获取字符串中文字的拼音首字母并与字符串共同存放
@@ -99,7 +200,7 @@
         NSString *initialStr = [chineseString.string length]?[chineseString.string substringToIndex:1]:@"";
         if ([predicate evaluateWithObject:initialStr])
         {
-//            NSLog(@"chineseString.string== %@",chineseString.string);
+            //            NSLog(@"chineseString.string== %@",chineseString.string);
             //首字母大写
             chineseString.pinYin = [chineseString.string capitalizedString] ;
         }else{
@@ -107,8 +208,8 @@
                 NSString *pinYinResult = [NSString string];
                 for(int j=0;j<chineseString.string.length;j++){
                     NSString *singlePinyinLetter = [[NSString stringWithFormat:@"%c",
-                                                   
-                                                   pinyinFirstLetter([chineseString.string characterAtIndex:j])]uppercaseString];
+                                                     
+                                                     pinyinFirstLetter([chineseString.string characterAtIndex:j])]uppercaseString];
                     //                    NSLog(@"singlePinyinLetter ==%@",singlePinyinLetter);
                     
                     pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
@@ -124,9 +225,9 @@
     NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"pinYin" ascending:YES]];
     [chineseStringsArray sortUsingDescriptors:sortDescriptors];
     
-//    for(int i=0;i<[chineseStringsArray count];i++){
-//        NSLog(@"chineseStringsArray====%@",((ChineseString*)[chineseStringsArray objectAtIndex:i]).pinYin);
-//    }
+    //    for(int i=0;i<[chineseStringsArray count];i++){
+    //        NSLog(@"chineseStringsArray====%@",((ChineseString*)[chineseStringsArray objectAtIndex:i]).pinYin);
+    //    }
     NSLog(@"-----------------------------");
     return chineseStringsArray;
 }

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol BATableViewDelegate;
-@interface BATableView : UIView
+@interface BATableView : UIView <UISearchDisplayDelegate,UISearchBarDelegate>
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) id<BATableViewDelegate> delegate;
 - (void)reloadData;

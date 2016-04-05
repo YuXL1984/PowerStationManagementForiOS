@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "pinyin.h"
+#import "StationDataModel.h"
 
 @interface ChineseString : NSObject
 @property(strong,nonatomic)NSString *string;
@@ -17,7 +18,7 @@
 +(NSMutableArray*)IndexArray:(NSArray*)stringArr;
 
 //-----  返回联系人
-+(NSMutableArray*)LetterSortArray:(NSArray*)stringArr;
++(NSMutableArray*)LetterSortArray:(NSArray*)stringArr WithModelArray:(NSMutableArray *)modelArray;
 
 
 ///----------------------

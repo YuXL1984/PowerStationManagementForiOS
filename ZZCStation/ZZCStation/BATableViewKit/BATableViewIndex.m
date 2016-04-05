@@ -30,7 +30,7 @@
 - (id)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor clearColor];
-        
+
         if (frame.size.height > 480) {
             self.letterHeight = 14;
             fontSize = 12;
@@ -105,7 +105,7 @@
     [textLayer setFrame:frame];
     [textLayer setAlignmentMode:kCAAlignmentCenter];
     [textLayer setContentsScale:[[UIScreen mainScreen] scale]];
-    [textLayer setForegroundColor:RGB(168, 168, 168, 1).CGColor];
+    [textLayer setForegroundColor:RGB(30, 144, 255, 1).CGColor];
     [textLayer setString:string];
     return textLayer;
 }

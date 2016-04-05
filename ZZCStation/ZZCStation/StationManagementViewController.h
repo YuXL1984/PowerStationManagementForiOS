@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface StationManagementViewController : UIViewController
+@interface StationManagementViewController : UIViewController <UISearchBarDelegate,UISearchDisplayDelegate>
 
 @end

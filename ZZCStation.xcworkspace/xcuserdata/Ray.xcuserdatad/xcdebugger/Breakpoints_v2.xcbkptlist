@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZZCStation/ZZCStation/StationManagementViewController.m"
-            timestampString = "481196585.178704"
+            timestampString = "481545004.152129"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
             landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,12 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZZCStation/ZZCStation/StationManagementViewController.m"
-            timestampString = "481195067.831798"
+            timestampString = "481545004.152129"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "-requestStationDataFromBackground"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,76 +122,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZZCStation/ZZCStation/StationManagementViewController.m"
-            timestampString = "481194481.411773"
+            timestampString = "481542587.649421"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
-            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[StationManagementViewController tableView:commitEditingStyle:forRowAtIndexPath:]"
-                  moduleName = "ZZCStation"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Ray/PowerStationManagementForiOS/ZZCStation/ZZCStation/StationManagementViewController.m"
-                  timestampString = "481193427.900102"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "229"
-                  endingLineNumber = "229"
-                  offsetFromSymbolStart = "162">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[StationManagementViewController tableView:commitEditingStyle:forRowAtIndexPath:]"
-                  moduleName = "ZZCStation"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Ray/PowerStationManagementForiOS/ZZCStation/ZZCStation/StationManagementViewController.m"
-                  timestampString = "481193427.900268"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "229"
-                  endingLineNumber = "229"
-                  offsetFromSymbolStart = "170">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ZZCStation/ZZCStation/StationManagementViewController.m"
-            timestampString = "481195067.831798"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ZZCStation/ZZCStation/StationManagementViewController.m"
-            timestampString = "481195067.831798"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
-            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

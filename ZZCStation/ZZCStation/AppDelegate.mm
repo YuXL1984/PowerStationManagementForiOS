@@ -42,7 +42,7 @@
     
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0))
     {
-        //        self.edgesForExtendedLayout=UIRectEdgeNone;
+//        self.navigationController.edgesForExtendedLayout=UIRectEdgeNone;
         self.navigationController.navigationBar.translucent = NO;
     }
     

@@ -24,11 +24,12 @@
     if (self) {
         // Initialization code
         
-        self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width-20, frame.size.height) style:UITableViewStylePlain];
         [self addSubview:self.tableView];
         
         self.tableViewIndex = [[BATableViewIndex alloc] initWithFrame:(CGRect){SCREEN_WIDTH-20,0,20,frame.size.height}];
-//        self.tableViewIndex.backgroundColor = [UIColor redColor];
+        self.tableViewIndex.backgroundColor = [UIColor whiteColor];
+        
         [self addSubview:self.tableViewIndex];
         self.flotageLabel = [[UILabel alloc] initWithFrame:(CGRect){(SCREEN_WIDTH- 64 ) / 2,(self.bounds.size.height - 64) / 2,64,64}];
         self.flotageLabel.backgroundColor = RGB(18, 29, 45, 0.9);
