@@ -24,11 +24,11 @@
     if (self) {
         // Initialization code
         
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width-20, frame.size.height) style:UITableViewStylePlain];
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height) style:UITableViewStylePlain];
         [self addSubview:self.tableView];
         
         self.tableViewIndex = [[BATableViewIndex alloc] initWithFrame:(CGRect){SCREEN_WIDTH-20,0,20,frame.size.height}];
-        self.tableViewIndex.backgroundColor = [UIColor whiteColor];
+        self.tableViewIndex.backgroundColor = [UIColor clearColor];
         
         [self addSubview:self.tableViewIndex];
         self.flotageLabel = [[UILabel alloc] initWithFrame:(CGRect){(SCREEN_WIDTH- 64 ) / 2,(self.bounds.size.height - 64) / 2,64,64}];
@@ -71,7 +71,7 @@
 {
     
     if (index > -1){   // for safety, should always be YES
-        for (NSInteger i = 0; i < [self.delegate numberOfSectionsInTableView:self]; i++) {
+        for (NSInteger i = 0; i < [self.delegate numberOfSectionsInTableView:self.tableView]; i++) {
             if ([[self.delegate titleString:i] isEqualToString:title]) {
                 [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]
                                       atScrollPosition:UITableViewScrollPositionTop

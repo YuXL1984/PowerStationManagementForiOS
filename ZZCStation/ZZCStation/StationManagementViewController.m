@@ -39,7 +39,7 @@
     BATableView *_BAtableview;
     UISearchBar *theSearchBar;
     UISearchDisplayController *searchDisplayController;
-
+    UIAlertView *searchLocalAlert;
 }
 
 - (void)viewDidLoad {
@@ -70,7 +70,7 @@
 }
 
 -(void)setUpView{
-    _BAtableview = [[BATableView alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(theSearchBar.frame), SCREEN_WIDTH, SCREEN_HEIGHT-64) ];
+    _BAtableview = [[BATableView alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(theSearchBar.frame), SCREEN_WIDTH, SCREEN_HEIGHT-64-CGRectGetHeight(theSearchBar.frame))];
     _BAtableview.delegate = self;
     //不显示垂直滚动条
     _BAtableview.tableView.showsVerticalScrollIndicator = NO;
@@ -165,8 +165,8 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *lableForHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20)];
-    lableForHeader.backgroundColor = [UIColor colorWithRed:188/255.0 green:189/255.0 blue:190/255.0 alpha:1];
-    
+//    lableForHeader.backgroundColor = [UIColor colorWithRed:188/255.0 green:189/255.0 blue:190/255.0 alpha:1];
+    lableForHeader.backgroundColor = [UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f];
     lableForHeader.text = [NSString stringWithFormat:@"   %@",[self.indexArray objectAtIndex:section]];
     lableForHeader.textColor = [UIColor whiteColor];
     return lableForHeader;
@@ -287,6 +287,9 @@
         theSearchBar.keyboardType = UIKeyboardTypeNamePhonePad;
         [theSearchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         [theSearchBar sizeToFit];
+        
+        theSearchBar.backgroundImage = [self imageWithColor:[UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f] size:theSearchBar.bounds.size];
+        
         searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
         searchDisplayController.searchResultsDataSource = self;
         searchDisplayController.searchResultsDelegate = self;
@@ -299,9 +302,7 @@
 
 #pragma mark-searchBarDelegate
 -(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
-
     [self.searchStationDataArray removeAllObjects];
-
 }
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption{
@@ -309,27 +310,34 @@
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    self.searchStr = searchText;
-}
-
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    
-    [self searchStationWithName:self.searchStr];
-}
-
--(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-    for(UIView *subview in self.searchDisplayController.searchResultsTableView.subviews) {
-        
-        if([subview isKindOfClass:[UILabel class]]) {
-            
-            [(UILabel*)subview setText:@"请点击键盘上的搜索按钮，开始搜索！"];
-            
-        }
-        
+    if (searchText.length > 0) {
+        NSString *searchTextDelSpace = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        self.searchStr = searchTextDelSpace;
+        [self searchLocalStationWithName:searchText];
     }
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    theSearchBar.placeholder = [NSString stringWithFormat:@"请输入站点名称进行搜索（共%ld个站点）",self.powerStationDataArray.count];
     return YES;
 }
 
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self searchStationWithName:self.searchStr];
+}
+
+//-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+//    for(UIView *subview in self.searchDisplayController.searchResultsTableView.subviews) {
+//        
+//        if([subview isKindOfClass:[UILabel class]]) {
+//            
+//            [(UILabel*)subview setText:@"请输入站点名称进行搜索！"];
+//            
+//        }
+//        
+//    }
+//    return YES;
+//}
 //- (void) searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
 //    
 //}
@@ -338,13 +346,14 @@
 //    
 //}
 //
-//- (void)searchBarTextDidBeginEditing:(UISearchBar *)sbar {
+//- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
 //    
 //}
 
 -(void)searchStationWithName:(NSString *)searchStr {
-    NSDictionary *searchDic = @{@"stationName":searchStr};
-    [FromCallFunctionToDic callFunctionInBackground:@"searchStationDataForName" withParameters:searchDic block:^(id object, NSError *error) {
+    NSString *searchString = [searchStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSDictionary *searchDic = @{@"stationName":searchString};
+    [FromCallFunctionToDic callFunctionInBackground:@"searchStationDataForBlurry" withParameters:searchDic block:^(id object, NSError *error) {
         if (error) {
             UIAlertView *searchFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [searchFunctionError show];
@@ -364,6 +373,61 @@
     }];
 }
 
+-(void)searchLocalStationWithName:(NSString *)searchStr {
+    NSString *searchString = [searchStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    [self.searchStationDataArray removeAllObjects];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@",searchString];
+    NSArray *tempArray =  [self.dataArray filteredArrayUsingPredicate:pred];
+    if (tempArray.count > 0) {
+        for (NSString *searchRusultStr in tempArray) {
+            if (searchRusultStr.length > 0) {
+                for (StationDataModel *searchRusultModel in self.powerStationDataArray) {
+                    if ([searchRusultModel.stationName isEqualToString:searchRusultStr]) {
+                        [self.searchStationDataArray addObject:searchRusultModel];
+                        
+                    }
+                }
+            }
+            
+        }
+    }
+    [searchDisplayController.searchResultsTableView reloadData];
+//    searchLocalAlert = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"本地搜索完成共%ld个结果，是否需要进行网络搜索",self.searchStationDataArray.count] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+//    [searchLocalAlert show];
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView == searchLocalAlert) {
+        if (buttonIndex == 0) {
+           [self searchStationWithName:self.searchStr];
+        }
+    }
+}
+
+
+-(NSMutableArray *)searchStationDataArray{
+    if (!_searchStationDataArray) {
+        _searchStationDataArray = [[NSMutableArray alloc] init];
+    }
+    return _searchStationDataArray;
+}
+
+//取消searchbar背景色
+- (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size
+{
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
