@@ -21,6 +21,8 @@
 #import "StationSearchViewController.h"
 #import "FromCallFunctionToDic.h"
 #import "StationListViewCell.h"
+#import "MJRefresh.h"
+#import "MJChiBaoZiHeader.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -33,6 +35,7 @@
 @property(nonatomic,strong) NSMutableArray *dataArray;
 @property(nonatomic,strong) NSMutableArray *searchStationDataArray;
 @property(nonatomic,strong) NSString *searchStr;
+
 @end
 
 @implementation StationManagementViewController {
@@ -65,8 +68,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
-    [self requestStationDataFromBackground];
+    [self refreshForDropdown];
+//    [self requestStationDataFromBackground];
 }
 
 -(void)setUpView{
@@ -94,8 +97,6 @@
 {
     return  [self.indexArray objectAtIndex:section];
 }
-
-
 
 #pragma mark - UITableViewDataSource
 //
@@ -193,6 +194,51 @@
     
 }
 
+//滑动删除
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        StationDataModel *sdModelForDel = [[StationDataModel alloc] init];
+        sdModelForDel = [[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        NSDictionary *delDic = [[NSDictionary alloc] init];
+        delDic = @{@"objectId":sdModelForDel.objectId};
+        [FromCallFunctionToDic callFunctionInBackground:@"delStationDataForOid" withParameters:delDic block:^(id object, NSError *error) {
+            if (error) {
+                UIAlertView *delFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                [delFunctionError show];
+            } else {
+                if ([object[@"code"] isEqualToString:@"1000"]) {
+                    
+                    [self.powerStationDataArray removeObject:sdModelForDel];
+                    if ([[self.letterResultArr objectAtIndex:indexPath.section] count] == 1) {
+                        
+                        [self.letterResultArr removeObjectAtIndex:indexPath.section];
+                        [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationRight];
+                        
+                    } else {
+                        [[self.letterResultArr objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
+                        [_BAtableview deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    }
+                    
+                    //[_BAtableview.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    UIAlertView *delResultData = [[UIAlertView alloc] initWithTitle:@"提示" message:object[@"resultData"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [delResultData show];
+                } else {
+                    UIAlertView *delError = [[UIAlertView alloc] initWithTitle:@"提示" message:object[@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [delError show];
+                    
+                }
+            }
+        }];
+        _BAtableview.tableView.editing = NO;
+        
+    }
+}
+
+
+
+#pragma Function
 //-(void)searchAction{
 //    StationSearchViewController *stationSearchVC = [[ StationSearchViewController alloc] init];
 //    [self.navigationController pushViewController:stationSearchVC animated:YES];
@@ -234,71 +280,9 @@
 
 
 
-//滑动删除
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
 
-        StationDataModel *sdModelForDel = [[StationDataModel alloc] init];
-        sdModelForDel = [[self.letterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-        NSDictionary *delDic = [[NSDictionary alloc] init];
-        delDic = @{@"objectId":sdModelForDel.objectId};
-        [FromCallFunctionToDic callFunctionInBackground:@"delStationDataForOid" withParameters:delDic block:^(id object, NSError *error) {
-            if (error) {
-                UIAlertView *delFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                [delFunctionError show];
-            } else {
-                if ([object[@"code"] isEqualToString:@"1000"]) {
 
-                    [self.powerStationDataArray removeObject:sdModelForDel];
-                    if ([[self.letterResultArr objectAtIndex:indexPath.section] count] == 1) {
-                        
-                        [self.letterResultArr removeObjectAtIndex:indexPath.section];
-                        [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationRight];
-                        
-                    } else {
-                        [[self.letterResultArr objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
-                        [_BAtableview deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                    }
-                    
-                    //[_BAtableview.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-                    
-                    UIAlertView *delResultData = [[UIAlertView alloc] initWithTitle:@"提示" message:object[@"resultData"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                    [delResultData show];
-                } else {
-                    UIAlertView *delError = [[UIAlertView alloc] initWithTitle:@"提示" message:object[@"error"] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                    [delError show];
-                    
-                }
-            }
-        }];
-        _BAtableview.tableView.editing = NO;
-        
-    }
-}
 
--(UISearchBar *)configSearchBar{
-    if (!theSearchBar) {
-        theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
-        theSearchBar.delegate = self;
-         //关闭自动校正
-        theSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-//        theSearchBar.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-        theSearchBar.showsScopeBar = YES;
-        theSearchBar.keyboardType = UIKeyboardTypeNamePhonePad;
-        [theSearchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-        [theSearchBar sizeToFit];
-        
-        theSearchBar.backgroundImage = [self imageWithColor:[UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f] size:theSearchBar.bounds.size];
-        
-        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
-        searchDisplayController.searchResultsDataSource = self;
-        searchDisplayController.searchResultsDelegate = self;
-        
-        searchDisplayController.delegate = self;
-        theSearchBar.scopeButtonTitles = self.indexArray;
-    }
-    return theSearchBar;
-}
 
 #pragma mark-searchBarDelegate
 -(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
@@ -392,9 +376,6 @@
         }
     }
     [searchDisplayController.searchResultsTableView reloadData];
-//    searchLocalAlert = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"本地搜索完成共%ld个结果，是否需要进行网络搜索",self.searchStationDataArray.count] delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-//    [searchLocalAlert show];
-    
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -413,6 +394,30 @@
     return _searchStationDataArray;
 }
 
+-(UISearchBar *)configSearchBar{
+    if (!theSearchBar) {
+        theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+        theSearchBar.delegate = self;
+        //关闭自动校正
+        theSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+//        theSearchBar.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+        theSearchBar.showsScopeBar = YES;
+        theSearchBar.keyboardType = UIKeyboardTypeNamePhonePad;
+        [theSearchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+        [theSearchBar sizeToFit];
+        
+        theSearchBar.backgroundImage = [self imageWithColor:[UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f] size:theSearchBar.bounds.size];
+        
+        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
+        searchDisplayController.searchResultsDataSource = self;
+        searchDisplayController.searchResultsDelegate = self;
+        
+        searchDisplayController.delegate = self;
+        theSearchBar.scopeButtonTitles = self.indexArray;
+    }
+    return theSearchBar;
+}
+
 //取消searchbar背景色
 - (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size
 {
@@ -427,6 +432,21 @@
     UIGraphicsEndImageContext();
     
     return image;
+}
+
+#pragma 下拉刷新
+- (void)refreshForDropdown {
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+    _BAtableview.tableView.mj_header = [MJChiBaoZiHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    // 马上进入刷新状态
+    [_BAtableview.tableView.mj_header beginRefreshing];
+}
+
+- (void)loadNewData {
+    [self requestStationDataFromBackground];
+    // 拿到当前的下拉刷新控件，结束刷新状态
+    [_BAtableview.tableView.mj_header endRefreshing];
+    
 }
 
 - (void)didReceiveMemoryWarning {

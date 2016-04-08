@@ -13,7 +13,7 @@
 #import "MJExtension.h"
 #import "StationDataModel.h"
 #import "StationManagementViewController.h"
-
+#import "LoginViewController.h"
 
 @interface AppDelegate ()
 
@@ -36,15 +36,24 @@
 
     
 //    StationListViewController *myVC = [[StationListViewController alloc] init];
-    StationManagementViewController *myVC = [[StationManagementViewController alloc] init];
+
+//    StationManagementViewController *myVC = [[StationManagementViewController alloc] init];
+//    self.navigationController = [[UINavigationController alloc] initWithRootViewController:myVC];
     
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:myVC];
+    //获取storyboard: 通过bundle根据storyboard的名字来获取我们的storyboard,
+    UIStoryboard *story = [UIStoryboard storyboardWithName:@"UserManagement" bundle:[NSBundle mainBundle]];
+    //由storyboard根据myView的storyBoardID来获取我们要切换的视图
+    LoginViewController *loginVC = [story instantiateViewControllerWithIdentifier:@"login"];
+    
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:loginVC];
+
     
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0))
     {
 //        self.navigationController.edgesForExtendedLayout=UIRectEdgeNone;
         self.navigationController.navigationBar.translucent = NO;
     }
+    
     
     self.window.rootViewController = _navigationController;
     
