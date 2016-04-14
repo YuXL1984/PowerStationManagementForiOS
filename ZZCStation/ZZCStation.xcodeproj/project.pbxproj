@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7101D5D21CBE211000C2018D /* MBProgressHUD+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 7101D5CE1CBE211000C2018D /* MBProgressHUD+Add.m */; };
+		7101D5D31CBE211000C2018D /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7101D5CF1CBE211000C2018D /* MBProgressHUD.bundle */; };
+		7101D5D41CBE211000C2018D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7101D5D11CBE211000C2018D /* MBProgressHUD.m */; };
+		7101D5D71CBE3EDA00C2018D /* LogonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7101D5D61CBE3EDA00C2018D /* LogonViewController.m */; };
+		7101D5DA1CBE497900C2018D /* ForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7101D5D91CBE497900C2018D /* ForgetPasswordViewController.m */; };
 		7104EF121C5E2EC800C38CAA /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7104EF111C5E2EC800C38CAA /* mapapi.bundle */; };
 		7104EF151C5E48D300C38CAA /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 7104EF141C5E48D300C38CAA /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7137F0C31CAA77D2005FA123 /* FromCallFunctionToDic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7137F0C21CAA77D2005FA123 /* FromCallFunctionToDic.m */; };
@@ -103,6 +108,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7101D5CD1CBE211000C2018D /* MBProgressHUD+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+Add.h"; sourceTree = "<group>"; };
+		7101D5CE1CBE211000C2018D /* MBProgressHUD+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+Add.m"; sourceTree = "<group>"; };
+		7101D5CF1CBE211000C2018D /* MBProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MBProgressHUD.bundle; sourceTree = "<group>"; };
+		7101D5D01CBE211000C2018D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		7101D5D11CBE211000C2018D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		7101D5D51CBE3EDA00C2018D /* LogonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogonViewController.h; sourceTree = "<group>"; };
+		7101D5D61CBE3EDA00C2018D /* LogonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogonViewController.m; sourceTree = "<group>"; };
+		7101D5D81CBE497900C2018D /* ForgetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPasswordViewController.h; sourceTree = "<group>"; };
+		7101D5D91CBE497900C2018D /* ForgetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordViewController.m; sourceTree = "<group>"; };
 		7104EF111C5E2EC800C38CAA /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = Libs/mapapi.bundle; sourceTree = "<group>"; };
 		7104EF131C5E48D300C38CAA /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		7104EF141C5E48D300C38CAA /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
@@ -279,6 +293,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7101D5CC1CBE211000C2018D /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				7101D5CD1CBE211000C2018D /* MBProgressHUD+Add.h */,
+				7101D5CE1CBE211000C2018D /* MBProgressHUD+Add.m */,
+				7101D5CF1CBE211000C2018D /* MBProgressHUD.bundle */,
+				7101D5D01CBE211000C2018D /* MBProgressHUD.h */,
+				7101D5D11CBE211000C2018D /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		7134B5BE1CBF922800C999B1 /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				7192CD211C5F9AA50051BD58 /* LocationDemoViewController.xib */,
+				71A0EB671C5E1507005C288B /* JsonDataRW.h */,
+				71A0EB681C5E1507005C288B /* JsonDataRW.m */,
+				7192CD1E1C5F9A610051BD58 /* LocationDemoViewController.h */,
+				7192CD1F1C5F9A610051BD58 /* LocationDemoViewController.m */,
+				715D2AAB1CA3D06900C8C662 /* StationSearchViewController.h */,
+				715D2AAC1CA3D06900C8C662 /* StationSearchViewController.m */,
+				71A0EB281C5DAFA0005C288B /* StationListViewController.h */,
+				71A0EB291C5DAFA0005C288B /* StationListViewController.m */,
+				71D4FDF21CA11BDB00DDEAFB /* StationListViewCell.h */,
+				71D4FDF31CA11BDB00DDEAFB /* StationListViewCell.m */,
+			);
+			name = Old;
+			sourceTree = "<group>";
+		};
 		71A0EAE91C5DADBC005C288B = {
 			isa = PBXGroup;
 			children = (
@@ -302,37 +346,32 @@
 		71A0EAF41C5DADBC005C288B /* ZZCStation */ = {
 			isa = PBXGroup;
 			children = (
+				7134B5BE1CBF922800C999B1 /* Old */,
 				71A0EB311C5DAFE0005C288B /* Libs */,
 				71A0EAF81C5DADBD005C288B /* AppDelegate.h */,
 				71A0EAF91C5DADBD005C288B /* AppDelegate.mm */,
 				71A127761CB7A9360089FEA4 /* LoginViewController.h */,
 				71A127771CB7A9360089FEA4 /* LoginViewController.m */,
+				7101D5D51CBE3EDA00C2018D /* LogonViewController.h */,
+				7101D5D61CBE3EDA00C2018D /* LogonViewController.m */,
+				7101D5D81CBE497900C2018D /* ForgetPasswordViewController.h */,
+				7101D5D91CBE497900C2018D /* ForgetPasswordViewController.m */,
 				71AAD0C41CABD11F001EE225 /* StationManagementViewController.h */,
 				71AAD0C51CABD11F001EE225 /* StationManagementViewController.m */,
-				715D2AAB1CA3D06900C8C662 /* StationSearchViewController.h */,
-				715D2AAC1CA3D06900C8C662 /* StationSearchViewController.m */,
+				71A0EB2C1C5DAFA0005C288B /* StationAddressDetailViewController.h */,
+				71A0EB2D1C5DAFA0005C288B /* StationAddressDetailViewController.m */,
 				71A0EB2A1C5DAFA0005C288B /* StationAddViewController.h */,
 				71A0EB2B1C5DAFA0005C288B /* StationAddViewController.m */,
 				7192CD1B1C5F99FE0051BD58 /* LocationViewController.h */,
 				7192CD1C1C5F99FE0051BD58 /* LocationViewController.m */,
-				71A0EB2C1C5DAFA0005C288B /* StationAddressDetailViewController.h */,
-				71A0EB2D1C5DAFA0005C288B /* StationAddressDetailViewController.m */,
-				7192CD1E1C5F9A610051BD58 /* LocationDemoViewController.h */,
-				7192CD1F1C5F9A610051BD58 /* LocationDemoViewController.m */,
 				715278A21C9F8B0E00C0DF81 /* StationDataModel.h */,
 				715278A31C9F8B0E00C0DF81 /* StationDataModel.m */,
 				7137F0C11CAA77D2005FA123 /* FromCallFunctionToDic.h */,
 				7137F0C21CAA77D2005FA123 /* FromCallFunctionToDic.m */,
-				71A0EB281C5DAFA0005C288B /* StationListViewController.h */,
-				71A0EB291C5DAFA0005C288B /* StationListViewController.m */,
-				71D4FDF21CA11BDB00DDEAFB /* StationListViewCell.h */,
-				71D4FDF31CA11BDB00DDEAFB /* StationListViewCell.m */,
-				7192CD211C5F9AA50051BD58 /* LocationDemoViewController.xib */,
+				71A0EB031C5DADBD005C288B /* LaunchScreen.storyboard */,
 				71A127741CB7A4040089FEA4 /* UserManagement.storyboard */,
-				71A0EAFE1C5DADBD005C288B /* Main.storyboard */,
 				71A0EB011C5DADBD005C288B /* Assets.xcassets */,
 				71CCB1321CB78A2200D227D9 /* Images.xcassets */,
-				71A0EB031C5DADBD005C288B /* LaunchScreen.storyboard */,
 				71A0EB061C5DADBD005C288B /* Info.plist */,
 				71A0EAF51C5DADBC005C288B /* Supporting Files */,
 			);
@@ -342,8 +381,7 @@
 		71A0EAF51C5DADBC005C288B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				71A0EB671C5E1507005C288B /* JsonDataRW.h */,
-				71A0EB681C5E1507005C288B /* JsonDataRW.m */,
+				71A0EAFE1C5DADBD005C288B /* Main.storyboard */,
 				71A0EAF61C5DADBC005C288B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -370,6 +408,7 @@
 		71A0EB311C5DAFE0005C288B /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				7101D5CC1CBE211000C2018D /* MBProgressHUD */,
 				71CCB0EF1CB7822600D227D9 /* MJRefresh */,
 				71AAD0BD1CABC701001EE225 /* BATableViewKit */,
 				71AAD09D1CABC2FB001EE225 /* MJExtension */,
@@ -661,6 +700,7 @@
 				71A0EB051C5DADBD005C288B /* LaunchScreen.storyboard in Resources */,
 				71A0EB021C5DADBD005C288B /* Assets.xcassets in Resources */,
 				7104EF121C5E2EC800C38CAA /* mapapi.bundle in Resources */,
+				7101D5D31CBE211000C2018D /* MBProgressHUD.bundle in Resources */,
 				7192CD221C5F9AA50051BD58 /* LocationDemoViewController.xib in Resources */,
 				71A0EB001C5DADBD005C288B /* Main.storyboard in Resources */,
 				71CCB12A1CB7823500D227D9 /* MJRefresh.bundle in Resources */,
@@ -694,8 +734,10 @@
 				71CCB12E1CB7823500D227D9 /* UIView+MJExtension.m in Sources */,
 				71CCB11F1CB7823500D227D9 /* MJRefreshFooter.m in Sources */,
 				71AAD0BA1CABC2FB001EE225 /* NSObject+MJKeyValue.m in Sources */,
+				7101D5DA1CBE497900C2018D /* ForgetPasswordViewController.m in Sources */,
 				71AAD0C31CABC701001EE225 /* BATableViewIndex.m in Sources */,
 				71CCB11C1CB7823500D227D9 /* MJRefreshAutoFooter.m in Sources */,
+				7101D5D71CBE3EDA00C2018D /* LogonViewController.m in Sources */,
 				71A127781CB7A9360089FEA4 /* LoginViewController.m in Sources */,
 				71A0EB2E1C5DAFA0005C288B /* StationListViewController.m in Sources */,
 				71CCB12C1CB7823500D227D9 /* UIScrollView+MJExtension.m in Sources */,
@@ -705,6 +747,7 @@
 				71AAD03B1CABB7EB001EE225 /* ChineseString.m in Sources */,
 				71AAD0B71CABC2FB001EE225 /* MJPropertyType.m in Sources */,
 				71CCB1201CB7823500D227D9 /* MJRefreshHeader.m in Sources */,
+				7101D5D41CBE211000C2018D /* MBProgressHUD.m in Sources */,
 				71AAD0BB1CABC2FB001EE225 /* NSObject+MJProperty.m in Sources */,
 				71AAD0B91CABC2FB001EE225 /* NSObject+MJCoding.m in Sources */,
 				71A0EB691C5E1507005C288B /* JsonDataRW.m in Sources */,
@@ -724,6 +767,7 @@
 				71A0EAFA1C5DADBD005C288B /* AppDelegate.mm in Sources */,
 				71CCB1221CB7823500D227D9 /* MJRefreshAutoNormalFooter.m in Sources */,
 				71CCB1241CB7823500D227D9 /* MJRefreshBackGifFooter.m in Sources */,
+				7101D5D21CBE211000C2018D /* MBProgressHUD+Add.m in Sources */,
 				71A0EAF71C5DADBC005C288B /* main.m in Sources */,
 				71AAD0B51CABC2FB001EE225 /* MJProperty.m in Sources */,
 				71AAD03C1CABB7EB001EE225 /* pinyin.c in Sources */,
@@ -829,6 +873,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -865,6 +910,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -874,7 +920,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 7585269@qq.com (AKU7Y7L8M8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZZCStation/Libs",
@@ -889,8 +936,9 @@
 					"-lc++",
 					"-lsqlite3",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ray.ZZCStation;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ray.ZZCStationMG;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -898,7 +946,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 7585269@qq.com (AKU7Y7L8M8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZZCStation/Libs",
@@ -913,8 +962,9 @@
 					"-lc++",
 					"-lsqlite3",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ray.ZZCStation;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ray.ZZCStationMG;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

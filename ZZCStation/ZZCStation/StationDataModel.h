@@ -13,5 +13,5 @@
 @property (nonatomic,strong)NSString *stationNumber;
 @property (nonatomic,strong)NSString *stationName;
 @property (nonatomic,strong)NSString *stationAddress;
-
+@property (nonatomic,strong)NSString *userId;
 @end

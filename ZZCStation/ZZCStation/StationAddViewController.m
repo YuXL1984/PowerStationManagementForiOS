@@ -127,9 +127,9 @@
     }else{
 
         NSDictionary *addDic = [[NSDictionary alloc] init];
-        addDic = @{@"stationName":self.stationNameTF.text,@"stationAddress":self.stationAddressTF.text};
+        addDic = @{@"stationName":self.stationNameTF.text,@"stationAddress":self.stationAddressTF.text,@"userId":[AVUser currentUser].objectId};
         
-        [FromCallFunctionToDic callFunctionInBackground:@"addStationData" withParameters:addDic block:^(id object, NSError *error) {
+        [FromCallFunctionToDic callFunctionInBackground:@"addStationDataForUserId" withParameters:addDic block:^(id object, NSError *error) {
             if (error) {
                 UIAlertView *addFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [addFunctionError show];

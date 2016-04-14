@@ -23,6 +23,9 @@
 #import "StationListViewCell.h"
 #import "MJRefresh.h"
 #import "MJChiBaoZiHeader.h"
+#import "LoginViewController.h"
+#import "MBProgressHUD.h"
+#import "MBProgressHUD+Add.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -47,7 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.navigationItem.hidesBackButton =YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:[self configSearchBar]];
     self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -56,20 +59,23 @@
     //UICollectionView
 //    self.automaticallyAdjustsScrollViewInsets  = NO;
     
-    [self setTitle:@"站点管理"];
+    [self setTitle:[AVUser currentUser].username];
     UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStyleDone target:self action:@selector(addAction)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     
 //    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithTitle:@"网络搜索" style:UIBarButtonItemStyleDone target:self action:@selector(searchAction)];
 //    self.navigationItem.leftBarButtonItem = leftBtn;
+    
+    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithTitle:@"注销" style:UIBarButtonItemStyleDone target:self action:@selector(logOutAction)];
+    self.navigationItem.leftBarButtonItem = leftBtn;
 
     
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [self refreshForDropdown];
-//    [self requestStationDataFromBackground];
+//    [self refreshForDropdown];
+    [self requestStationDataFromBackground];
 }
 
 -(void)setUpView{
@@ -77,6 +83,8 @@
     _BAtableview.delegate = self;
     //不显示垂直滚动条
     _BAtableview.tableView.showsVerticalScrollIndicator = NO;
+    
+    _BAtableview.tableView.mj_header = [MJChiBaoZiHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     [self.view addSubview:_BAtableview];
 }
 
@@ -249,10 +257,24 @@
     [self.navigationController pushViewController:stationAddVC animated:YES];
 }
 
+-(void)logOutAction {
+    [AVUser logOut];
+    AVUser * currentUser = [AVUser currentUser];
+    if (!currentUser) {
+        //获取storyboard: 通过bundle根据storyboard的名字来获取我们的storyboard,
+        UIStoryboard *story = [UIStoryboard storyboardWithName:@"UserManagement" bundle:[NSBundle mainBundle]];
+        //由storyboard根据myView的storyBoardID来获取我们要切换的视图
+        LoginViewController *loginVC = [story instantiateViewControllerWithIdentifier:@"login"];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }
+    
+}
+
 //从后台请求所有站点数据并排序处理
 -(void)requestStationDataFromBackground{
-    
-    [FromCallFunctionToDic callFunctionInBackground:@"loadStationData" withParameters:nil block:^(id object, NSError *error) {
+    NSDictionary *loadDic = [[NSDictionary alloc] init];
+    loadDic = @{@"userId":[AVUser currentUser].objectId};
+    [FromCallFunctionToDic callFunctionInBackground:@"loadStationDataForUserId" withParameters:loadDic block:^(id object, NSError *error) {
         if (error) {
             UIAlertView *loadFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [loadFunctionError show];
@@ -336,8 +358,8 @@
 
 -(void)searchStationWithName:(NSString *)searchStr {
     NSString *searchString = [searchStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSDictionary *searchDic = @{@"stationName":searchString};
-    [FromCallFunctionToDic callFunctionInBackground:@"searchStationDataForBlurry" withParameters:searchDic block:^(id object, NSError *error) {
+    NSDictionary *searchDic = @{@"stationName":searchString,@"userId":[AVUser currentUser].objectId};
+    [FromCallFunctionToDic callFunctionInBackground:@"searchStationDataForBlurryFromUserId" withParameters:searchDic block:^(id object, NSError *error) {
         if (error) {
             UIAlertView *searchFunctionError = [[UIAlertView alloc] initWithTitle:@"提示" message:@"从后台获取数据异常！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [searchFunctionError show];
@@ -435,12 +457,12 @@
 }
 
 #pragma 下拉刷新
-- (void)refreshForDropdown {
-    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
-    _BAtableview.tableView.mj_header = [MJChiBaoZiHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    // 马上进入刷新状态
-    [_BAtableview.tableView.mj_header beginRefreshing];
-}
+//- (void)refreshForDropdown {
+//    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+//    _BAtableview.tableView.mj_header = [MJChiBaoZiHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+//    // 马上进入刷新状态
+//    [_BAtableview.tableView.mj_header beginRefreshing];
+//}
 
 - (void)loadNewData {
     [self requestStationDataFromBackground];

@@ -29,25 +29,24 @@
                       clientKey:@"1NMjNSW5V1h3SsWXpkdoum6x"];
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
-//    [AVUser logInWithUsernameInBackground:@"Ray" password:@"123456" block:^(AVUser *user, NSError *error) {
-//        NSLog(@"user = %@",user);
-//        NSLog(@"AVUser error = %@",error);
-//    }];
+    AVUser * currentUser = [AVUser currentUser];
+    if (currentUser &&[currentUser signUp:nil] ) {
+        NSLog(@"用户存在");
+        if (currentUser.username.length>0) {
+            StationManagementViewController *stationManagementVC = [[StationManagementViewController alloc] init];
+            self.navigationController = [[UINavigationController alloc] initWithRootViewController:stationManagementVC];
 
+        }
+    } else {
+        //获取storyboard: 通过bundle根据storyboard的名字来获取我们的storyboard,
+        UIStoryboard *story = [UIStoryboard storyboardWithName:@"UserManagement" bundle:[NSBundle mainBundle]];
+        //由storyboard根据myView的storyBoardID来获取我们要切换的视图
+        LoginViewController *loginVC = [story instantiateViewControllerWithIdentifier:@"login"];
+        
+        self.navigationController = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        }
     
-//    StationListViewController *myVC = [[StationListViewController alloc] init];
 
-//    StationManagementViewController *myVC = [[StationManagementViewController alloc] init];
-//    self.navigationController = [[UINavigationController alloc] initWithRootViewController:myVC];
-    
-    //获取storyboard: 通过bundle根据storyboard的名字来获取我们的storyboard,
-    UIStoryboard *story = [UIStoryboard storyboardWithName:@"UserManagement" bundle:[NSBundle mainBundle]];
-    //由storyboard根据myView的storyBoardID来获取我们要切换的视图
-    LoginViewController *loginVC = [story instantiateViewControllerWithIdentifier:@"login"];
-    
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:loginVC];
-
-    
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0))
     {
 //        self.navigationController.edgesForExtendedLayout=UIRectEdgeNone;
@@ -55,7 +54,7 @@
     }
     
     
-    self.window.rootViewController = _navigationController;
+    self.window.rootViewController = self.navigationController;
     
     [self.window makeKeyAndVisible];
     
