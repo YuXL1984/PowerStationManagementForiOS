@@ -25,6 +25,10 @@
     self.emailNameTF.delegate = self;
     self.passWordTF.delegate = self;
     self.rePassWordTF.delegate = self;
+    self.emailNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.passWordTF.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.rePassWordTF.autocorrectionType = UITextAutocorrectionTypeNo;
+
     self.navigationItem.title = @"用户注册";
     // Do any additional setup after loading the view.
 }

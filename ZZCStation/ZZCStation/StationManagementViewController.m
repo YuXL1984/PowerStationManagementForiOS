@@ -32,7 +32,7 @@
 
 @interface StationManagementViewController ()<BATableViewDelegate>
 
-@property (nonatomic,strong) NSMutableArray *powerStationDataArray;
+@property(nonatomic,strong) NSMutableArray *powerStationDataArray;
 @property(nonatomic,strong) NSMutableArray *indexArray;
 @property(nonatomic,strong) NSMutableArray *letterResultArr;
 @property(nonatomic,strong) NSMutableArray *dataArray;
@@ -74,7 +74,6 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-//    [self refreshForDropdown];
     [self requestStationDataFromBackground];
 }
 
@@ -88,16 +87,61 @@
     [self.view addSubview:_BAtableview];
 }
 
+- (void)loadNewData {
+    [self requestStationDataFromBackground];
+    // 拿到当前的下拉刷新控件，结束刷新状态
+    [_BAtableview.tableView.mj_header endRefreshing];
+    
+}
+
+-(NSMutableArray *)searchStationDataArray{
+    if (!_searchStationDataArray) {
+        _searchStationDataArray = [[NSMutableArray alloc] init];
+    }
+    return _searchStationDataArray;
+}
+
+-(UISearchBar *)configSearchBar{
+    if (!theSearchBar) {
+        theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+        theSearchBar.delegate = self;
+        //关闭自动校正
+        theSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+        theSearchBar.showsScopeBar = YES;
+        theSearchBar.keyboardType = UIKeyboardTypeNamePhonePad;
+        [theSearchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+        [theSearchBar sizeToFit];
+        
+        theSearchBar.backgroundImage = [self imageWithColor:[UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f] size:theSearchBar.bounds.size];
+        
+        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
+        searchDisplayController.searchResultsDataSource = self;
+        searchDisplayController.searchResultsDelegate = self;
+        
+        searchDisplayController.delegate = self;
+        theSearchBar.scopeButtonTitles = self.indexArray;
+    }
+    return theSearchBar;
+}
+
+//取消searchbar背景色
+- (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size
+{
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
 #pragma mark - UITableViewDataSource
 - (NSArray *) sectionIndexTitlesForABELTableView:(BATableView *)tableView {
-//    return @[
-//             @"A",@"B",@"C",@"D",@"E",
-//             @"F",@"G",@"H",@"I",@"J",
-//             @"K",@"L",@"M",@"N",@"O",
-//             @"P",@"Q",@"R",@"S",@"T",
-//             @"U",@"V",@"W",@"X",@"Y",
-//             @"Z", @"#"
-//             ];
     return self.indexArray;
 }
 
@@ -107,12 +151,6 @@
 }
 
 #pragma mark - UITableViewDataSource
-//
-//-(NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-//{
-//    return self.indexArray;
-//}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *key = [self.indexArray objectAtIndex:section];
     if (tableView == _BAtableview.tableView) {
@@ -174,7 +212,6 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *lableForHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20)];
-//    lableForHeader.backgroundColor = [UIColor colorWithRed:188/255.0 green:189/255.0 blue:190/255.0 alpha:1];
     lableForHeader.backgroundColor = [UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f];
     lableForHeader.text = [NSString stringWithFormat:@"   %@",[self.indexArray objectAtIndex:section]];
     lableForHeader.textColor = [UIColor whiteColor];
@@ -324,37 +361,20 @@
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
-    theSearchBar.placeholder = [NSString stringWithFormat:@"请输入站点名称进行搜索（共%ld个站点）",self.powerStationDataArray.count];
-    return YES;
+    if (self.powerStationDataArray.count > 0 ) {
+        searchBar.placeholder = [NSString stringWithFormat:@"请输入站点名称进行搜索（共%ld个站点）",self.powerStationDataArray.count];
+        return YES;
+    } else {
+        searchBar.placeholder = @"当前无站点可供搜索！";
+        return NO;
+    }
+    
+    
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self searchStationWithName:self.searchStr];
 }
-
-//-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-//    for(UIView *subview in self.searchDisplayController.searchResultsTableView.subviews) {
-//        
-//        if([subview isKindOfClass:[UILabel class]]) {
-//            
-//            [(UILabel*)subview setText:@"请输入站点名称进行搜索！"];
-//            
-//        }
-//        
-//    }
-//    return YES;
-//}
-//- (void) searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-//    
-//}
-//
-//- (void)searchResultsTableShouldChange {
-//    
-//}
-//
-//- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-//    
-//}
 
 -(void)searchStationWithName:(NSString *)searchStr {
     NSString *searchString = [searchStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -406,69 +426,6 @@
            [self searchStationWithName:self.searchStr];
         }
     }
-}
-
-
--(NSMutableArray *)searchStationDataArray{
-    if (!_searchStationDataArray) {
-        _searchStationDataArray = [[NSMutableArray alloc] init];
-    }
-    return _searchStationDataArray;
-}
-
--(UISearchBar *)configSearchBar{
-    if (!theSearchBar) {
-        theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
-        theSearchBar.delegate = self;
-        //关闭自动校正
-        theSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-//        theSearchBar.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-        theSearchBar.showsScopeBar = YES;
-        theSearchBar.keyboardType = UIKeyboardTypeNamePhonePad;
-        [theSearchBar setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-        [theSearchBar sizeToFit];
-        
-        theSearchBar.backgroundImage = [self imageWithColor:[UIColor colorWithRed:0.78f green:0.78f blue:0.80f alpha:1.00f] size:theSearchBar.bounds.size];
-        
-        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
-        searchDisplayController.searchResultsDataSource = self;
-        searchDisplayController.searchResultsDelegate = self;
-        
-        searchDisplayController.delegate = self;
-        theSearchBar.scopeButtonTitles = self.indexArray;
-    }
-    return theSearchBar;
-}
-
-//取消searchbar背景色
-- (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size
-{
-    CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-#pragma 下拉刷新
-//- (void)refreshForDropdown {
-//    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
-//    _BAtableview.tableView.mj_header = [MJChiBaoZiHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-//    // 马上进入刷新状态
-//    [_BAtableview.tableView.mj_header beginRefreshing];
-//}
-
-- (void)loadNewData {
-    [self requestStationDataFromBackground];
-    // 拿到当前的下拉刷新控件，结束刷新状态
-    [_BAtableview.tableView.mj_header endRefreshing];
-    
 }
 
 - (void)didReceiveMemoryWarning {

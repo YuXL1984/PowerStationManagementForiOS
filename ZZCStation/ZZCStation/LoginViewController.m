@@ -26,6 +26,9 @@
     // Do any additional setup after loading the view.
     self.eMailName.delegate = self;
     self.passWord.delegate = self;
+    self.eMailName.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.passWord.autocorrectionType = UITextAutocorrectionTypeNo;
+
     self.navigationItem.title = @"用户管理";
     self.navigationItem.hidesBackButton =YES;
 }

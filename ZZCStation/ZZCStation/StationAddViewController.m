@@ -240,6 +240,8 @@
     //[_stationNameTF setBackgroundColor:[UIColor grayColor]];
     [_stationNameTF setBorderStyle:UITextBorderStyleRoundedRect];
     [_stationNameTF setClearButtonMode:UITextFieldViewModeAlways];
+    _stationNameTF.clearsOnBeginEditing = NO;
+    _stationNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
     _stationNameTF.delegate = self;
     return _stationNameTF;
 }
@@ -252,6 +254,8 @@
     //[_stationAddressTF setBackgroundColor:[UIColor grayColor]];
     [_stationAddressTF setBorderStyle:UITextBorderStyleRoundedRect];
     [_stationAddressTF setClearButtonMode:UITextFieldViewModeAlways];
+    _stationAddressTF.clearsOnBeginEditing = NO;
+    _stationAddressTF.autocorrectionType = UITextAutocorrectionTypeNo;
     _stationAddressTF.delegate = self;
     return _stationAddressTF;
 }

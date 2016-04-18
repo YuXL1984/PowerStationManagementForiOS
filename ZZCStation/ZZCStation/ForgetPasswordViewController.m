@@ -20,6 +20,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.emailAddressTF.delegate = self;
+    self.emailAddressTF.autocorrectionType = UITextAutocorrectionTypeNo;
+
     self.navigationItem.title = @"找回密码";
     // Do any additional setup after loading the view.
 }
